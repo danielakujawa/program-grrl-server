@@ -16,4 +16,20 @@ router.put('/me', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/applicants', (req, res, next) => {
+  User.find({ userType: 'applicant' })
+    .then((userData) => {
+      res.json(userData);
+    })
+    .catch(next);
+});
+
+router.get('/:id', (req, res, next) => {
+  User.findById(req.params.id)
+    .then((userData) => {
+      res.json(userData);
+    })
+    .catch(next);
+});
+
 module.exports = router;
