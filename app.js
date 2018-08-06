@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 
 const auth = require('./routes/auth');
+const user = require('./routes/user');
 
 // ---- instantiations
 
@@ -24,14 +25,15 @@ mongoose.connect('mongodb://localhost/program-grrl', {
 
 // Middlewares
 
-app.use(cors({
-  credentials: true,
-  origin: ['http://localhost:4200']
-}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:4200']
+}));
 
 app.use(session({
   store: new MongoStore({
@@ -49,6 +51,7 @@ app.use(session({
 // --- routes
 
 app.use('/auth', auth);
+app.use('/user', user);
 
 // --- error handling
 

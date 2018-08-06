@@ -6,19 +6,14 @@ const router = express.Router();
 const User = require('../models/user');
 
 router.put('/me', (req, res, next) => {
-  const name = req.body.name;
+  const currentUserId = req.session.currentUser._id;
+  const options = {new: true};
 
-  User.findOneAndUpdate({name}, 'name')
-    .then((userExists) => {
-      const newUser = User({
-        name
-      });
-
-      return newUser.save()
-        .then(() => {
-          req.session.currentUser = newUser;
-          res.json(newUser);
-        });
+  User.findByIdAndUpdate(currentUserId, req.body, options)
+    .then((updatedUser) => {
+      res.json(updatedUser);
     })
     .catch(next);
 });
+
+module.exports = router;
