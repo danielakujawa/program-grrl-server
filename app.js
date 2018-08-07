@@ -1,5 +1,5 @@
 // ----- dependencies
-
+require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -18,7 +18,7 @@ const app = express();
 // ---- database
 
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost/program-grrl', {
+mongoose.connect(process.env.MONGODB_URI, {
   keepAlive: true,
   reconnectTries: Number.MAX_VALUE
 });
@@ -32,7 +32,7 @@ app.use(cookieParser());
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:4200']
+  origin: [process.env.CLIENT_URL]
 }));
 
 app.use(session({
