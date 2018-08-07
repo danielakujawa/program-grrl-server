@@ -8,6 +8,7 @@ const User = require('../models/user');
 router.put('/me', (req, res, next) => {
   const currentUserId = req.session.currentUser._id;
   const options = {new: true};
+  req.body.complete = true;
 
   User.findByIdAndUpdate(currentUserId, req.body, options)
     .then((updatedUser) => {
