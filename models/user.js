@@ -48,6 +48,10 @@ const userSchema = new Schema({
   sponsor: {
     type: ObjectId,
     ref: 'User'
+  },
+  applicant: {
+    type: ObjectId,
+    ref: 'User'
   }
 });
 

@@ -25,6 +25,30 @@ router.get('/applicants', (req, res, next) => {
     .catch(next);
 });
 
+router.post('/:applicantId/sponsor', (req, res, next) => {
+  const applicantId = req.params.applicantId;
+  const sponsorId = req.session.currentUser.username;
+  const filter = { sponsor: sponsorId };
+
+  User.findByIdAndUpdate(applicantId, filter)
+    .then(() => {
+      res.status(204).json({ code: 'user-updated' });
+    })
+    .catch(next);
+});
+
+router.post('/:applicantId/applicant', (req, res, next) => {
+  const applicantId = req.params.applicantId;
+  const sponsorId = req.session.currentUser._id;
+  const filter = { applicant: applicantId };
+
+  User.findByIdAndUpdate(sponsorId, filter)
+    .then(() => {
+      res.status(204).json({ code: 'user-updated' });
+    })
+    .catch(next);
+});
+
 router.get('/:id', (req, res, next) => {
   User.findById(req.params.id)
     .then((userData) => {
