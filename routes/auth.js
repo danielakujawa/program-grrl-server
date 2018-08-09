@@ -63,6 +63,7 @@ router.post('/login', (req, res, next) => {
   }
 
   User.findOne({ username })
+    .populate('sponsor applicant')
     .then((user) => {
       if (!user) {
         return res.status(404).json({code: 'not-found'});
