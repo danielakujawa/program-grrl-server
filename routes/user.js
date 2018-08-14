@@ -34,22 +34,29 @@ router.post('/:applicantId/sponsor', (req, res, next) => {
 
   User.findByIdAndUpdate(applicantId, update)
     .then(() => {
-      const update = { applicant: applicantId };
-      return User.findByIdAndUpdate(sponsorId, update)
-        .populate('sponsor applicant')
+      return User.find(update, {username: 1, image: 1})
         .then((result) => {
-          req.session.currentUser = result;
-          res.status(204).json({ code: 'user-updated' });
+          console.log(result);
+          res.json(result);
         });
     })
     .catch(next);
 });
 
 router.get('/:id', (req, res, next) => {
+  let data = {};
+
   User.findById(req.params.id)
-    .populate('sponsor applicant')
+    .populate('sponsor')
     .then((userData) => {
-      res.json(userData);
+      data.profile = userData;
+      if (userData.userType === 'sponsor') {
+        return User.find({sponsor: userData._id});
+      }
+    })
+    .then((sponsoredUsers) => {
+      data.sponsoredUsers = sponsoredUsers;
+      res.json(data);
     })
     .catch(next);
 });

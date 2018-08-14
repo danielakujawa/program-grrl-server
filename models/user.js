@@ -24,7 +24,7 @@ const userSchema = new Schema({
   },
   image: {
     type: String,
-    default: 'https://cdn1.vectorstock.com/i/thumb-large/45/70/female-avatar-profile-picture-silhouette-light-vector-4684570.jpg'
+    enum: ['http://res.cloudinary.com/dlbsug8tm/image/upload/v1533846339/pg-users/cate.jpg', 'http://res.cloudinary.com/dlbsug8tm/image/upload/v1533846339/pg-users/fabiola.jpg']
   },
   name: {
     type: String
@@ -48,11 +48,8 @@ const userSchema = new Schema({
   sponsor: {
     type: ObjectId,
     ref: 'User'
-  },
-  applicant: {
-    type: ObjectId,
-    ref: 'User'
   }
+
 });
 
 const User = mongoose.model('User', userSchema);
