@@ -11,8 +11,9 @@ router.put('/me', (req, res, next) => {
   req.body.complete = true;
 
   User.findByIdAndUpdate(currentUserId, req.body, options)
-    .populate('sponsor applicant')
+    .populate('sponsor')
     .then((updatedUser) => {
+      req.session.currentUser = updatedUser;
       res.json(updatedUser);
     })
     .catch(next);
@@ -20,7 +21,7 @@ router.put('/me', (req, res, next) => {
 
 router.get('/applicants', (req, res, next) => {
   User.find({ userType: 'applicant', complete: true, sponsor: { $exists: false } })
-    .populate('sponsor applicant')
+    .populate('sponsor')
     .then((userData) => {
       res.json(userData);
     })
