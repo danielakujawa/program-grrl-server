@@ -28,6 +28,16 @@ router.get('/applicants', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/applicants/:language', (req, res, next) => {
+  const languageFilter = req.params.language;
+  User.find({ userType: 'applicant', complete: true, sponsor: { $exists: false }, programmingLanguages: languageFilter })
+    .populate('sponsor')
+    .then((userData) => {
+      res.json(userData);
+    })
+    .catch(next);
+});
+
 router.post('/:applicantId/sponsor', (req, res, next) => {
   const applicantId = req.params.applicantId;
   const sponsorId = req.session.currentUser._id;
